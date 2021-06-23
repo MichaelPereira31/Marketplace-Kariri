@@ -9,10 +9,11 @@ FROM produtos AS produto
 INNER JOIN 
     usuarios AS usuario 
 ON 
-    produto.dono_fk_id = usuario.id; 
+    produto.dono_fk_id = usuario.id
+WHERE usuario.username = 'mpereira'; 
 
 
--- Selecionando todos os endereços de um determinado usuário.
+-- Selecionando todos os endereços de todos os usuário.
 SELECT 
     endereco.*, usuario.nome , usuario.contato
 FROM 
@@ -31,17 +32,25 @@ FROM
 INNER JOIN
     usuarios AS usuario
 ON
-    endereco.usuario_fk_id = 1;
+    endereco.usuario_fk_id = 1
+WHERE 
+	usuario.username = 'jgomes';
 
 
 -- Selecionando todas as compras de um determinado usuário
 SELECT 
     pedido.id, 
-    usuario.nome AS "comprador", 
-    produto.nome AS "produto", 
+    usuario.nome as "comprador", 
+    produto.nome as "produto", 
     produto.descricao, 
     pedido.quantidade, 
-    pedido.preco_total
+    pedido.preco_total,
+	endereco.cep,
+	endereco.rua,
+	endereco.numero,
+	endereco.bairro,
+	endereco.cidade,
+	pedido.adicionado_em
 FROM 
     usuarios AS usuario
 INNER JOIN 
@@ -62,7 +71,13 @@ SELECT
     produto.nome as "produto", 
     produto.descricao, 
     pedido.quantidade, 
-    pedido.preco_total
+    pedido.preco_total,
+	endereco.cep,
+	endereco.rua,
+	endereco.numero,
+	endereco.bairro,
+	endereco.cidade,
+	pedido.adicionado_em
 FROM 
     pedidos AS pedido
 INNER JOIN 
@@ -72,4 +87,8 @@ ON
 INNER JOIN 
     produtos AS produto 
 ON
-    pedido.produtos_fk_id = produto.id;
+    pedido.produtos_fk_id = produto.id
+INNER JOIN
+	enderecos AS endereco
+ON 
+	pedido.endereco_fk_id = endereco.id;
